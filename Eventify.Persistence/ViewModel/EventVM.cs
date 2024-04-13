@@ -62,6 +62,7 @@ namespace Eventify.Persistence.ViewModel
 
         public DateTime LastExecutedAt { get; set; }
         public string? ErrorMessage { get; set; }
+        public bool ShowCopyText { get; set; }
 
         public Guid EventId { get; set; }
 

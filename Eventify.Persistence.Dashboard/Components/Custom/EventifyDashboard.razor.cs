@@ -20,6 +20,16 @@ namespace Eventify.Persistence.Dashboard.Components.Custom
             await JS.InvokeVoidAsync("openModal", "detailModal");
         }
 
+        private async Task Copy2Clipboard(HandleResultVM handleResult)
+        {
+            await JS.InvokeVoidAsync("copyToClipboard", handleResult.ErrorMessage);
+            handleResult.ShowCopyText = true;
+            StateHasChanged();
+            await Task.Delay(2000);
+            handleResult.ShowCopyText = false;
+            StateHasChanged();
+        }
+
         private async Task CloseDetailModal()
         {
             await JS.InvokeVoidAsync("closeModal", "detailModal");
@@ -39,7 +49,7 @@ namespace Eventify.Persistence.Dashboard.Components.Custom
         {
             try
             {
-                var handleResult = SelectedEvent.HandleResults.First(x=> x.Id == handlerId);
+                var handleResult = SelectedEvent.HandleResults.First(x => x.Id == handlerId);
                 var result = await EventOperator.TriggerHandler(handlerId);
 
                 handleResult.ErrorMessage = result.ErrorMessage;
@@ -54,6 +64,5 @@ namespace Eventify.Persistence.Dashboard.Components.Custom
                 Console.WriteLine(ex);
             }
         }
-
     }
 }

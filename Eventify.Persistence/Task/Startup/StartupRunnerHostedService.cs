@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Eventify.Persistence.Startup
+namespace Eventify.Persistence.Task.Startup
 {
     internal class StartupRunnerHostedService : IHostedService
     {
@@ -17,7 +17,7 @@ namespace Eventify.Persistence.Startup
             _serviceProvider = serviceProvider;
         }
 
-        public async Task StartAsync(CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task StartAsync(CancellationToken cancellationToken)
         {
             using (IServiceScope scope = _serviceProvider.CreateScope())
             {
@@ -31,9 +31,9 @@ namespace Eventify.Persistence.Startup
 
         }
 
-        public Task StopAsync(CancellationToken cancellationToken)
+        public System.Threading.Tasks.Task StopAsync(CancellationToken cancellationToken)
         {
-            return Task.CompletedTask;
+            return System.Threading.Tasks.Task.CompletedTask;
         }
     }
 }

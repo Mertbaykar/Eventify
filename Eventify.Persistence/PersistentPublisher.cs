@@ -21,7 +21,7 @@ namespace Eventify.Persistence
             this.eventPersistence = eventPersistence;
         }
 
-        public async Task Publish<TEvent>(TEvent @event) where TEvent : EventifyEvent
+        public async System.Threading.Tasks.Task Publish<TEvent>(TEvent @event) where TEvent : EventifyEvent
         {
             using (var scope = serviceScopeFactory.CreateScope())
             {

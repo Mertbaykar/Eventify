@@ -54,7 +54,9 @@ namespace Eventify.Persistence.Entity
 
         private void InitData<TEvent>(TEvent @event, EventInfo eventInfo) where TEvent : EventifyEvent
         {
-            eventInfo.Data = JsonSerializer.Serialize(@event, new JsonSerializerOptions
+            var inputType = @event.GetType();
+
+            eventInfo.Data = JsonSerializer.Serialize(@event, inputType, new JsonSerializerOptions
             {
                 WriteIndented = true
             });

@@ -18,9 +18,9 @@ namespace Eventify.Persistence.Persistence
             this.eventContextFactory = eventContextFactory;
         }
 
-        public async Task Persist(EventInfo eventInfo)
+        public async System.Threading.Tasks.Task Persist(EventInfo eventInfo)
         {
-            using (var eventContext = eventContextFactory.CreateDbContext())
+            using (var eventContext = await eventContextFactory.CreateDbContextAsync())
             {
                 try
                 {

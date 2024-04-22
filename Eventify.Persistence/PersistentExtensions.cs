@@ -13,8 +13,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Eventify.Persistence.Persistence;
 using System.Runtime.CompilerServices;
-using Eventify.Persistence.Startup;
 using Eventify.Persistence.EventOperator;
+using Eventify.Persistence.Task.Startup;
 
 [assembly: InternalsVisibleTo("Eventify.Persistence.SqlServer")]
 namespace Eventify.Persistence

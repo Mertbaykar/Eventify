@@ -102,13 +102,13 @@ namespace Eventify.Persistence.EventOperator
             }
         }
 
-        private async Task ExecuteHandle(object handlerInstance, object eventData, HandleResult handleResult)
+        private async System.Threading.Tasks.Task ExecuteHandle(object handlerInstance, object eventData, HandleResult handleResult)
         {
             try
             {
                 var handleMethod = handlerInstance.GetType().GetMethod("Handle");
 
-                await (Task)handleMethod.Invoke(handlerInstance, new[] { eventData });
+                await (System.Threading.Tasks.Task)handleMethod.Invoke(handlerInstance, new[] { eventData });
                 handleResult.MarkSuccess();
             }
             catch (Exception ex)

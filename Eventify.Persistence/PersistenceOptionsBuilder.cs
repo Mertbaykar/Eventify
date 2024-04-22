@@ -4,10 +4,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
 using System.Runtime.CompilerServices;
-using Eventify.Persistence.Startup.Tasks;
-using Eventify.Persistence.Startup;
+using Eventify.Persistence.Task.Startup;
 
 namespace Eventify.Persistence
 {

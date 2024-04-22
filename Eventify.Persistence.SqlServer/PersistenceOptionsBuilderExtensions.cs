@@ -1,7 +1,7 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.EntityFrameworkCore;
 using Eventify.Persistence.Persistence;
-using Eventify.Persistence.Startup.Tasks;
+using Eventify.Persistence.Task.Startup;
 
 namespace Eventify.Persistence.SqlServer
 {

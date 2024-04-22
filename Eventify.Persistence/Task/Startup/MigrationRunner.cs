@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Eventify.Persistence.Startup.Tasks
+namespace Eventify.Persistence.Task.Startup
 {
     internal class MigrationRunner : IStartupTask
     {
@@ -17,7 +17,7 @@ namespace Eventify.Persistence.Startup.Tasks
             eventContextFactory = dbContextFactoryFactory;
         }
 
-        public async Task ExecuteAsync(CancellationToken cancellationToken = default)
+        public async System.Threading.Tasks.Task ExecuteAsync(CancellationToken cancellationToken = default)
         {
             using EventContext dbContext = await eventContextFactory.CreateDbContextAsync();
             await dbContext.Database.MigrateAsync(cancellationToken);

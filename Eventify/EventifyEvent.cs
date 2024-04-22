@@ -1,12 +1,16 @@
-﻿namespace Eventify
+﻿using System.Text.Json.Serialization;
+
+namespace Eventify
 {
     public class EventifyEvent
     {
         private Guid id = Guid.NewGuid();
+        [JsonIgnore]
         public Guid Id => id;
 
         private DateTime occurredAt = DateTime.Now;
-		public DateTime OccurredAt => occurredAt;
+        [JsonIgnore]
+        public DateTime OccurredAt => occurredAt;
      
     }
 }

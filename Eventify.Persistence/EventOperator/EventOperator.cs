@@ -45,7 +45,7 @@ namespace Eventify.Persistence.EventOperator
                         ErrorMessage = handleResult.ErrorMessage,
                         EventId = handleResult.EventId,
                         LastExecutedAt = handleResult.LastExecutedAt!.Value,
-                        Success = handleResult.Success
+                        StatusId = handleResult.StatusId,
                     }).ToList()
 
                 }).ToList();

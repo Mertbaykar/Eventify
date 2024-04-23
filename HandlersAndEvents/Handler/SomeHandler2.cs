@@ -1,8 +1,10 @@
 ﻿using Eventify;
+using Eventify.Attribute;
 using HandlersAndEvents.Event;
 
 namespace HandlersAndEvents.Handler
 {
+    [ExecuteOrder(2)]
     public class SomeHandler2 : IEventHandler<SomeEvent>
     {
         public Task Handle(SomeEvent @event)

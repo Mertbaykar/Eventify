@@ -17,7 +17,20 @@ namespace Eventify.Persistence.Entity
         /// Handler tipinin assembly dahil tam adı
         /// </summary>
         public string TypeName { get; private set; }
-        public bool Success { get; private set; }
+        public int StatusId { get; private set; }
+
+        private HandlerStatus? status;
+        [NotMapped]
+        public HandlerStatus Status
+        {
+            get
+            {
+                if (!status.HasValue)
+                    status = Enum.GetValues<HandlerStatus>().First(x => StatusId == (int)x);
+                return status!.Value;
+            }
+        }
+
         public int TryCount { get; private set; }
         public DateTime? LastExecutedAt { get; private set; }
 
@@ -40,7 +53,7 @@ namespace Eventify.Persistence.Entity
 
         public void MarkSuccess()
         {
-            Success = true;
+            StatusId = (int)HandlerStatus.Success;
             LastExecutedAt = DateTime.Now;
             TryCount++;
             ErrorMessage = null;
@@ -48,10 +61,17 @@ namespace Eventify.Persistence.Entity
 
         public void MarkFail(string errorMessage)
         {
-            Success = false;
+            StatusId = (int)HandlerStatus.Fail;
             LastExecutedAt = DateTime.Now;
             TryCount++;
             ErrorMessage = errorMessage;
         }
+    }
+
+    public enum HandlerStatus
+    {
+        Fail = -1,
+        Suspended = 0,
+        Success = 1,
     }
 }

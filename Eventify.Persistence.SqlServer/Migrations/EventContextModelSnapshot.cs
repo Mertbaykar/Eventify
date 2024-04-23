@@ -32,7 +32,7 @@ namespace Eventify.Persistence.SqlServer.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime?>("LastOccurredAt")
+                    b.Property<DateTime>("LastOccurredAt")
                         .HasColumnType("datetime2");
 
                     b.Property<int>("TryCount")
@@ -62,8 +62,8 @@ namespace Eventify.Persistence.SqlServer.Migrations
                     b.Property<DateTime?>("LastExecutedAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<bool>("Success")
-                        .HasColumnType("bit");
+                    b.Property<int>("StatusId")
+                        .HasColumnType("int");
 
                     b.Property<int>("TryCount")
                         .HasColumnType("int");

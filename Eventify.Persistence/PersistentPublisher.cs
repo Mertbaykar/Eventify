@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Eventify.Persistence
 {
-    internal class PersistentPublisher : IPublisher
+    internal class PersistentPublisher : PublisherBase, IPublisher
     {
         private readonly IServiceScopeFactory serviceScopeFactory;
         private readonly IEventPersistence eventPersistence;
@@ -26,6 +26,7 @@ namespace Eventify.Persistence
             using (var scope = serviceScopeFactory.CreateScope())
             {
                 var handlerInstances = scope.ServiceProvider.GetServices<IEventHandler<TEvent>>();
+                handlerInstances = OrderHandlers(handlerInstances);
 
                 EventInfo eventInfo = EventInfo.Create(@event);
 

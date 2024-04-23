@@ -12,7 +12,7 @@ builder.Services.AddControllers();
 // Add services to the container.
 var assembly = Assembly.GetAssembly(typeof(SomeEvent))!;
 string connString = builder.Configuration.GetConnectionString("Sql")!;
-builder.Services.AddEventify([assembly], options => options.UseEntityFrameworkPersistence(persistentOptions => persistentOptions.UseSqlServer(connString, false)));
+builder.Services.AddEventify([assembly], options => options.UseEntityFrameworkPersistence(persistentOptions => persistentOptions.UseSqlServer(connString)));
 
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle

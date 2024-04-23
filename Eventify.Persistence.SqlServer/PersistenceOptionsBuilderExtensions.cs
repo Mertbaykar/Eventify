@@ -16,7 +16,7 @@ namespace Eventify.Persistence.SqlServer
             });
 
             if (automigration)
-          persistenceOptionsBuilder.AddStartupTask<MigrationRunner>();
+                persistenceOptionsBuilder.AddStartupTask<MigrationRunner>();
 
 
             return persistenceOptionsBuilder;

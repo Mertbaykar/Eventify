@@ -54,7 +54,7 @@ namespace Eventify.Persistence.Dashboard.Components.Dashboard
 
                 handleResult.ErrorMessage = result.ErrorMessage;
                 handleResult.LastExecutedAt = result.LastExecutedAt!.Value;
-                handleResult.Success = result.Success;
+                handleResult.StatusId = result.StatusId;
                 handleResult.TryCount = result.TryCount;
 
                 await OpenSuccessModal();

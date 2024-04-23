@@ -4,8 +4,8 @@ using HandlersAndEvents.Event;
 
 namespace HandlersAndEvents.Handler
 {
-    [ExecuteOrder(1)]
-    public class SomeHandler : IEventHandler<SomeEvent>
+
+    public class SomeHandlerWithoutOrder : IEventHandler<SomeEvent>
     {
         public Task Handle(SomeEvent @event)
         {

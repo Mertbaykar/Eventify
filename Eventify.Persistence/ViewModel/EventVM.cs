@@ -57,7 +57,21 @@ namespace Eventify.Persistence.ViewModel
         /// </summary>
         public string TypeName { get; set; }
         public string ShortTypeName => GetShortTypeName();
-        public bool Success { get; set; }
+
+        public int StatusId { get; set; }
+        private HandlerStatus? status;
+        public HandlerStatus Status
+        {
+            get
+            {
+                if (!status.HasValue)
+                    status = Enum.GetValues<HandlerStatus>().First(x => StatusId == (int)x);
+                return status!.Value;
+            }
+        }
+
+
+        public string TableColumnClass => GetTableColumnClass();
         public int TryCount { get; set; }
 
         public DateTime LastExecutedAt { get; set; }
@@ -74,6 +88,21 @@ namespace Eventify.Persistence.ViewModel
             int lastIndex = typePart.LastIndexOf('.');
             string result = typePart.Substring(lastIndex + 1);
             return result;
+        }
+
+        private string GetTableColumnClass()
+        {
+            switch (Status)
+            {
+                case HandlerStatus.Success:
+                    return "table-success";
+                case HandlerStatus.Fail:
+                    return "table-danger";
+                case HandlerStatus.Suspended:
+                    return "";
+                default:
+                    return "";
+            }
         }
     }
 }

@@ -12,16 +12,15 @@ namespace Eventify.Persistence.Task.Startup
     {
         private readonly IDbContextFactory<EventContext> eventContextFactory;
 
-        internal MigrationRunner(IDbContextFactory<EventContext> dbContextFactoryFactory)
+        public MigrationRunner(IDbContextFactory<EventContext> dbContextFactoryFactory)
         {
             eventContextFactory = dbContextFactoryFactory;
         }
 
         public async System.Threading.Tasks.Task ExecuteAsync(CancellationToken cancellationToken = default)
         {
-            using EventContext dbContext = await eventContextFactory.CreateDbContextAsync();
-            await dbContext.Database.MigrateAsync(cancellationToken);
-            await dbContext.DisposeAsync();
+            using (EventContext dbContext = await eventContextFactory.CreateDbContextAsync())
+                await dbContext.Database.MigrateAsync(cancellationToken);
         }
     }
 }

@@ -138,7 +138,7 @@
                                             {
                                                 foreach (var handleResult in SelectedEvent.HandleResults.OrderByDescending(x => x.LastExecutedAt))
                                                 {
-                                                    <tr class='@(!handleResult.Success?"table-danger":"table-success")'>
+                                                    <tr class='@handleResult.TableColumnClass'>
 
                                                         <td>
                                                             <span class="fs-7">@handleResult.ShortTypeName</span>

@@ -1,0 +1,4 @@
+Migration Update for related SqlProvider project (etc Eventify.Persistence.SqlServer):
+
+Remove existing migration(s).
+Just add ef core design package to target test project (etc TestAPI) temporarily

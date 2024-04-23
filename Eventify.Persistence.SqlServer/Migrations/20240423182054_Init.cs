@@ -22,7 +22,7 @@ namespace Eventify.Persistence.SqlServer.Migrations
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     TypeName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Data = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    LastOccurredAt = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    LastOccurredAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     TryCount = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
@@ -37,7 +37,7 @@ namespace Eventify.Persistence.SqlServer.Migrations
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     TypeName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Success = table.Column<bool>(type: "bit", nullable: false),
+                    StatusId = table.Column<int>(type: "int", nullable: false),
                     TryCount = table.Column<int>(type: "int", nullable: false),
                     LastExecutedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
                     ErrorMessage = table.Column<string>(type: "nvarchar(max)", nullable: true),

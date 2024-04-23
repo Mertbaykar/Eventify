@@ -24,11 +24,8 @@ namespace Eventify.Persistence.Task.Startup
                 var startupTasks = scope.ServiceProvider.GetServices<IStartupTask>();
 
                 foreach (var task in startupTasks)
-                {
                     await task.ExecuteAsync(cancellationToken);
-                }
             }
-
         }
 
         public System.Threading.Tasks.Task StopAsync(CancellationToken cancellationToken)

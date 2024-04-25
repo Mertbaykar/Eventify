@@ -25,7 +25,8 @@ namespace TestAPI.Controllers
         [HttpGet(Name = "GetWeatherForecast")]
         public async Task<IEnumerable<WeatherForecast>> Get()
         {
-            await publisher.Publish(new SomeEvent { Name = "Mert", Lastname = "Baykar" });
+            bool result = await publisher.Publish(new SomeEvent { Name = "Mert", Lastname = "Baykar" });
+            Console.WriteLine(result);
 
             return Enumerable.Range(1, 5).Select(index => new WeatherForecast
             {

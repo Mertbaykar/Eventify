@@ -1,6 +1,7 @@
 ﻿using Eventify.Persistence.Entity;
 using Eventify.Persistence.Persistence;
 using Eventify.Publish;
+using Eventify.Saga;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
@@ -21,12 +22,15 @@ namespace Eventify.Persistence
             this.eventPersistence = eventPersistence;
         }
 
-        public async System.Threading.Tasks.Task Publish<TEvent>(TEvent @event) where TEvent : EventifyEvent
+        public async Task<bool> Publish<TEvent>(TEvent @event) where TEvent : EventifyEvent
         {
             using (var scope = serviceScopeFactory.CreateScope())
             {
                 var handlerInstances = scope.ServiceProvider.GetServices<IEventHandler<TEvent>>();
                 handlerInstances = OrderHandlers(handlerInstances);
+
+                var saga = scope.ServiceProvider.GetService<ISaga<TEvent>>();
+                IEventHandler<TEvent>? failedHandler = null;
 
                 EventInfo eventInfo = EventInfo.Create(@event);
 
@@ -36,21 +40,31 @@ namespace Eventify.Persistence
 
                     try
                     {
-                        await handlerInstance.Handle(@event);
-                        handleResult.MarkSuccess();
+                        if (failedHandler == null)
+                        {
+                            await handlerInstance.Handle(@event);
+                            handleResult.MarkSuccess();
+                        }
                     }
                     catch (Exception ex)
                     {
                         handleResult.MarkFail(ex.Message);
+                        failedHandler = handlerInstance;
                     }
-                    finally
-                    {
-                        eventInfo.AddHandleResult(handleResult);
-                    }
+
+                    eventInfo.AddHandleResult(handleResult);
                 }
 
                 await eventPersistence.Persist(eventInfo);
 
+                // callback
+                if (saga != null)
+                {
+                    if (failedHandler == null) await saga.Succeeded(@event);
+                    else await saga.Failed(@event, failedHandler);
+                }
+
+                return failedHandler == null;
             }
         }
     }

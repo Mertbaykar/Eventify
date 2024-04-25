@@ -9,6 +9,7 @@ namespace HandlersAndEvents.Handler
     {
         public Task Handle(SomeEvent @event)
         {
+            //throw new NotImplementedException();
             Console.WriteLine($"Event tetiklendi 2: {@event.Name} {@event.Lastname}");
             return Task.CompletedTask;
         }

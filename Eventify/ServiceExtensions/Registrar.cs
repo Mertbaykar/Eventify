@@ -24,12 +24,13 @@ namespace Eventify.ServiceExtensions
         {
             return services
                 .RegisterPublisher<TPublisher>()
-                .RegisterHandlers(assemblies);
+                .RegisterHandlers(assemblies)
+                .RegisterSagas(assemblies);
         }
 
         private static IServiceCollection RegisterHandlers(this IServiceCollection services, IEnumerable<Assembly> assemblies)
         {
-            var handlerTypes = FindEventHandlerTypes(assemblies);
+            var handlerTypes = FindHandlerTypes(assemblies);
 
             foreach (var handlerType in handlerTypes)
             {
@@ -40,12 +41,26 @@ namespace Eventify.ServiceExtensions
             return services;
         }
 
+        private static IServiceCollection RegisterSagas(this IServiceCollection services, IEnumerable<Assembly> assemblies)
+        {
+            var sagaTypes = FindSagaTypes(assemblies);
+
+            foreach (var sagaType in sagaTypes)
+            {
+                var sagaInterface = FindSagaInterface(sagaType)!;
+                services.TryAddTransient(sagaInterface, sagaType);
+            }
+
+            return services;
+        }
+
+
         private static IServiceCollection RegisterPublisher<TPublisher>(this IServiceCollection services) where TPublisher : class, IPublisher
         {
             return services.AddSingleton<IPublisher, TPublisher>();
         }
 
-        private static Type[] FindEventHandlerTypes(IEnumerable<Assembly> assemblies)
+        private static Type[] FindHandlerTypes(IEnumerable<Assembly> assemblies)
         {
             return assemblies
                    .SelectMany(assembly => assembly.DefinedTypes)
@@ -53,5 +68,12 @@ namespace Eventify.ServiceExtensions
                    .ToArray();
         }
 
+        private static Type[] FindSagaTypes(IEnumerable<Assembly> assemblies)
+        {
+            return assemblies
+                   .SelectMany(assembly => assembly.DefinedTypes)
+                   .Where(ImplementsSaga)
+                   .ToArray();
+        }
     }
 }

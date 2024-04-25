@@ -32,7 +32,7 @@ namespace Eventify.Persistence.Entity
         }
 
         public int TryCount { get; private set; }
-        public DateTime? LastExecutedAt { get; private set; }
+        public DateTime? LastExecutedAt { get; private set; } = null;
 
         public string? ErrorMessage { get; private set; }
 

@@ -1,62 +1,54 @@
 ﻿using Eventify.Persistence.Entity;
 using Eventify.Persistence.Persistence;
-using Eventify.Persistence.ViewModel;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using Microsoft.EntityFrameworkCore.Internal;
 using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using System.Text;
 using System.Text.Json;
-using System.Threading.Tasks;
 
-namespace Eventify.Persistence.EventOperator
+namespace Eventify.Persistence.Trigger
 {
-    internal class EventOperator : IEventOperator
+    internal class EventTrigger : IEventTrigger
     {
-        private readonly IDbContextFactory<EventContext> dbContextFactory;
+        private readonly IDbContextFactory<EventContext> eventContextFactory;
         private readonly IServiceScopeFactory serviceScopeFactory;
 
-        public EventOperator(IDbContextFactory<EventContext> dbContextFactory, IServiceScopeFactory serviceScopeFactory)
+        public EventTrigger(IDbContextFactory<EventContext> eventContextFactory, IServiceScopeFactory serviceScopeFactory)
         {
-            this.dbContextFactory = dbContextFactory;
+            this.eventContextFactory = eventContextFactory;
             this.serviceScopeFactory = serviceScopeFactory;
         }
 
-        public async Task<List<EventVM>> GetEventsWitHandlers()
-        {
-            using (var context = await dbContextFactory.CreateDbContextAsync())
-            {
-                var result = context.Event.Select(@event => new EventVM
-                {
-                    Id = @event.Id,
-                    Data = @event.Data,
-                    TypeName = @event.TypeName,
-                    LastOccurredAt = @event.LastOccurredAt,
-                    TryCount = @event.TryCount,
+        //public List<EventVM> GetEventsWitHandlers()
+        //{
 
-                    HandleResults = @event.HandleResults.Select(handleResult => new HandleResultVM
-                    {
-                        Id = handleResult.Id,
-                        TryCount = handleResult.TryCount,
-                        TypeName = handleResult.TypeName,
-                        ErrorMessage = handleResult.ErrorMessage,
-                        EventId = handleResult.EventId,
-                        LastExecutedAt = handleResult.LastExecutedAt!.Value,
-                        StatusId = handleResult.StatusId,
-                    }).ToList()
+        //    var result = eventContextFactory.Event.Select(@event => new EventVM
+        //    {
+        //        Id = @event.Id,
+        //        Data = @event.Data,
+        //        TypeName = @event.TypeName,
+        //        LastOccurredAt = @event.LastOccurredAt,
+        //        TryCount = @event.TryCount,
 
-                }).ToList();
+        //        HandleResults = @event.HandleResults.Select(handleResult => new HandleResultVM
+        //        {
+        //            Id = handleResult.Id,
+        //            TryCount = handleResult.TryCount,
+        //            TypeName = handleResult.TypeName,
+        //            ErrorMessage = handleResult.ErrorMessage,
+        //            EventId = handleResult.EventId,
+        //            LastExecutedAt = handleResult.LastExecutedAt!.Value,
+        //            StatusId = handleResult.StatusId,
+        //        }).ToList()
 
-                return result;
-            }
-        }
+        //    }).ToList();
+
+        //    return result;
+
+        //}
 
         public async Task<HandleResult> TriggerHandler(Guid handlerId)
         {
-            using (var context = await dbContextFactory.CreateDbContextAsync())
+            using (var context = await eventContextFactory.CreateDbContextAsync())
             {
 
                 #region Handler
@@ -108,7 +100,7 @@ namespace Eventify.Persistence.EventOperator
             {
                 var handleMethod = handlerInstance.GetType().GetMethod("Handle");
 
-                await (System.Threading.Tasks.Task)handleMethod.Invoke(handlerInstance, new[] { eventData });
+                await (System.Threading.Tasks.Task)handleMethod.Invoke(handlerInstance, [eventData]);
                 handleResult.MarkSuccess();
             }
             catch (Exception ex)

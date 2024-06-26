@@ -9,6 +9,6 @@ namespace Eventify.Persistence.Persistence
 {
     internal interface IEventPersistence
     {
-        System.Threading.Tasks.Task Persist(EventInfo eventInfo);
+        void Persist(EventInfo eventInfo);
     }
 }

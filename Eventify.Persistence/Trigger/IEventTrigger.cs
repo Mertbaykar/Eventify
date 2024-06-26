@@ -1,16 +1,15 @@
 ﻿using Eventify.Persistence.Entity;
-using Eventify.Persistence.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Eventify.Persistence.EventOperator
+namespace Eventify.Persistence.Trigger
 {
-    public interface IEventOperator
+    public interface IEventTrigger
     {
-        Task<List<EventVM>> GetEventsWitHandlers();
+        //List<EventVM> GetEventsWitHandlers();
         Task<HandleResult> TriggerHandler(Guid handlerId);
     }
 }

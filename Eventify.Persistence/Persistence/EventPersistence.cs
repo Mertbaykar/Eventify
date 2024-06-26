@@ -18,19 +18,12 @@ namespace Eventify.Persistence.Persistence
             this.eventContextFactory = eventContextFactory;
         }
 
-        public async System.Threading.Tasks.Task Persist(EventInfo eventInfo)
+        public void Persist(EventInfo eventInfo)
         {
-            using (var eventContext = await eventContextFactory.CreateDbContextAsync())
+            using (var eventContext = eventContextFactory.CreateDbContext())
             {
-                try
-                {
-                    await eventContext.Event.AddAsync(eventInfo);
-                    await eventContext.SaveChangesAsync();
-                }
-                catch (Exception ex)
-                {
-
-                }
+                eventContext.Event.Add(eventInfo);
+                eventContext.SaveChanges();
             }
         }
     }

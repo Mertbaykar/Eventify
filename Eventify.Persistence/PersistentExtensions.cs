@@ -13,7 +13,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Eventify.Persistence.Persistence;
 using System.Runtime.CompilerServices;
-using Eventify.Persistence.EventOperator;
+using Eventify.Persistence.Trigger;
 using Eventify.Persistence.Task.Startup;
 
 [assembly: InternalsVisibleTo("Eventify.Persistence.SqlServer")]
@@ -31,7 +31,7 @@ namespace Eventify.Persistence
         {
             services.AddEventifyCore<PersistentPublisher>(assemblies)
                 .RegisterEventPersistence()
-                .RegisterDashboardServices()
+                .RegisterTriggerServices()
                 .AddStartupRunner();
 
             var builder = new OptionsBuilder(services);
@@ -49,9 +49,9 @@ namespace Eventify.Persistence
             return services.AddSingleton<IEventPersistence, EventPersistence>();
         }
 
-        private static IServiceCollection RegisterDashboardServices(this IServiceCollection services)
+        private static IServiceCollection RegisterTriggerServices(this IServiceCollection services)
         {
-            return services.AddSingleton<IEventOperator, EventOperator.EventOperator>();
+            return services.AddSingleton<IEventTrigger, EventTrigger>();
         }
 
         internal static IServiceCollection AddStartupTask<TStartupTask>(this IServiceCollection services) where TStartupTask : class, IStartupTask

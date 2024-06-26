@@ -55,7 +55,7 @@ namespace Eventify.Persistence
                     eventInfo.AddHandleResult(handleResult);
                 }
 
-                await eventPersistence.Persist(eventInfo);
+                eventPersistence.Persist(eventInfo);
 
                 // callback
                 if (saga != null)
